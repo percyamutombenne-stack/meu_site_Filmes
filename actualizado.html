@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime & Film Finder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .search-box { display: flex; gap: 0.5rem; }
+        .search-box input {
+            padding: 0.7rem 1rem;
+            border-radius: 30px;
+            border: none;
+            width: 250px;
+            font-size: 1rem;
+            background: #2a2a3a;
+            color: #fff;
+        }
+        .search-box input::placeholder { color: #888; }
+        .search-box button {
+            padding: 0.7rem 1.2rem;
+            border-radius: 30px;
+            border: none;
+            background: #e74c3c;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .filters {
+            max-width: 1400px;
+            margin: 1rem auto 0;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .filter-btn.active { background: #e74c3c; color: white; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 4px solid #e74c3c;
+        }
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #1e1e2a;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .card img { width: 100%; height: 300px; object-fit: cover; }
+        .card-info { padding: 0.8rem; }
+        .card-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-info p { font-size: 0.8rem; color: #aaa; display: flex; justify-content: space-between; }
+        .rating { color: #f39c12; }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .page-btn {
+            background: #1e1e2a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .page-btn.active { background: #e74c3c; color: white; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #1e1e2a;
+            max-width: 800px;
+            width: 90%;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .modal-poster { width: 250px; object-fit: cover; }
+        .modal-info { flex: 1; padding: 1.5rem; }
+        .modal-info h2 { margin-bottom: 0.5rem; }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+        }
+        .loading { text-align: center; padding: 3rem; font-size: 1.2rem; color: #aaa; }
+        .error { text-align: center; padding: 3rem; font-size: 1.2rem; color: #e74c3c; }
+        footer { text-align: center; padding: 2rem; background: rgba(0,0,0,0.5); margin-top: 2rem; }
+        @media (max-width: 700px) {
+            .header-content, .filters { flex-direction: column; align-items: stretch; }
+            .search-box input { width: 100%; }
+            .modal-content { flex-direction: column; }
+            .modal-poster { width: 100%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>🍿 Anime & Film Finder</h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar filme ou anime..." />
+            <button id="searchBtn">🔍 Buscar</button>
+        </div>
+    </div>
+</header>
+
+<div class="filters">
+    <button class="filter-btn active" data-category="movie">🎬 Filmes</button>
+    <button class="filter-btn" data-category="tv">📺 Animes/Séries</button>
+</div>
+
+<div class="container">
+    <h2 class="section-title" id="sectionTitle">Populares</h2>
+    <div class="movies-grid" id="moviesGrid">
+        <div class="loading">Carregando filmes...</div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+</div>
+
+<footer>
+    <p>Dados fornecidos por TMDb | Site em desenvolvimento</p>
+</footer>
+
+<div class="modal" id="modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+    // CONFIGURAÇÃO - API KEY
+    const API_KEY = 'c6798b14717251bedbd1b520ca954ee1';
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+
+    let currentCategory = 'movie';
+    let currentPage = 1;
+    let currentQuery = '';
+
+    // Elementos
+    const moviesGrid = document.getElementById('moviesGrid');
+    const sectionTitle = document.getElementById('sectionTitle');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const paginationDiv = document.getElementById('pagination');
+
+    // Filtros
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = btn.dataset.category;
+            currentPage = 1;
+            currentQuery = '';
+            searchInput.value = '';
+            loadContent();
+        });
+    });
+
+    // Busca
+    searchBtn.addEventListener('click', () => {
+        currentQuery = searchInput.value.trim();
+        currentPage = 1;
+        if (currentQuery) {
+            loadContent();
+        } else {
+            loadPopular();
+        }
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchBtn.click();
+    });
+
+    // Fechar modal
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    });
+
+    // Função principal para carregar conteúdo
+    async function loadContent() {
+        if (currentQuery) {
+            await searchContent();
+        } else {
+            await loadPopular();
+        }
+    }
+
+    // Carregar populares
+    async function loadPopular() {
+        moviesGrid.innerHTML = '<div class="loading">🔄 Carregando filmes populares...</div>';
+        try {
+            const endpoint = `${BASE_URL}/${currentCategory}/popular?api_key=${API_KEY}&language=pt-BR&page=${currentPage}`;
+            console.log('Buscando:', endpoint); // Log para debug
+            
+            const response = await fetch(endpoint);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            console.log('Dados recebidos:', data); // Log para debug
+            
+            if (data.results && data.results.length > 0) {
+                displayItems(data.results);
+                renderPagination(data.total_pages);
+                sectionTitle.innerText = currentCategory === 'movie' ? '🎬 Filmes Populares' : '📺 Animes/Séries Populares';
+            } else {
+                moviesGrid.innerHTML = '<div class="error">⚠️ Nenhum resultado encontrado. Verifique sua conexão.</div>';
+            }
+        } catch (error) {
+            console.error('Erro detalhado:', error);
+            moviesGrid.innerHTML = `<div class="error">
+                ❌ Erro ao carregar: ${error.message}<br><br>
+                <strong>Possíveis soluções:</strong><br>
+                1. Verifique se sua API Key está correta<br>
+                2. Aguarde alguns minutos e recarregue<br>
+                3. Verifique sua conexão com a internet
+            </div>`;
+        }
+    }
+
+    // Buscar conteúdo
+    async function searchContent() {
+        moviesGrid.innerHTML = '<div class="loading">🔍 Buscando...</div>';
+        try {
+            const endpoint = `${BASE_URL}/search/${currentCategory}?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(currentQuery)}&page=${currentPage}`;
+            console.log('Buscando:', endpoint);
+            
+            const response = await fetch(endpoint);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Resultados:', data);
+            
+            if (data.results && data.results.length > 0) {
+                displayItems(data.results);
+                renderPagination(data.total_pages);
+                sectionTitle.innerText = `🔎 Resultados: "${currentQuery}"`;
+            } else {
+                moviesGrid.innerHTML = '<div class="loading">😕 Nenhum resultado encontrado para esta busca.</div>';
+                paginationDiv.innerHTML = '';
+            }
+        } catch (error) {
+            console.error('Erro na busca:', error);
+            moviesGrid.innerHTML = `<div class="error">❌ Erro na busca: ${error.message}</div>`;
+        }
+    }
+
+    // Exibir itens
+    function displayItems(items) {
+        if (!items || items.length === 0) {
+            moviesGrid.innerHTML = '<div class="loading">Nenhum resultado encontrado.</div>';
+            paginationDiv.innerHTML = '';
+            return;
+        }
+
+        moviesGrid.innerHTML = '';
+        
+        items.forEach(item => {
+            // Verificar se tem imagem
+            let imageUrl = 'https://via.placeholder.com/300x450?text=Sem+Imagem';
+            if (item.poster_path) {
+                imageUrl = IMG_URL + item.poster_path;
+            }
+            
+            const title = currentCategory === 'movie' ? item.title : (item.name || item.original_name);
+            const year = currentCategory === 'movie' 
+                ? (item.release_date ? item.release_date.split('-')[0] : '?')
+                : (item.first_air_date ? item.first_air_date.split('-')[0] : '?');
+            const rating = item.vote_average ? item.vote_average.toFixed(1) : '0';
+
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Erro+Imagem'">
+                <div class="card-info">
+                    <h3>${title}</h3>
+                    <p><span>${year}</span> <span class="rating">⭐ ${rating}</span></p>
+                </div>
+            `;
+            card.addEventListener('click', () => showDetails(item.id, currentCategory));
+            moviesGrid.appendChild(card);
+        });
+    }
+
+    // Mostrar detalhes
+    async function showDetails(id, type) {
+        try {
+            const endpoint = `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=pt-BR`;
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            
+            const posterUrl = data.poster_path ? IMG_URL + data.poster_path : 'https://via.placeholder.com/300x450?text=Sem+Imagem';
+            const title = type === 'movie' ? data.title : data.name;
+            const year = type === 'movie' 
+                ? (data.release_date ? data.release_date.split('-')[0] : '?')
+                : (data.first_air_date ? data.first_air_date.split('-')[0] : '?');
+            const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'Gênero não informado';
+            const overview = data.overview || 'Sinopse não disponível.';
+            const rating = data.vote_average ? data.vote_average.toFixed(1) : '0';
+
+            modalContent.innerHTML = `
+                <img class="modal-poster" src="${posterUrl}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Sem+Imagem'">
+                <div class="modal-info">
+                    <h2>${title} (${year})</h2>
+                    <div class="details">⭐ ${rating} | ${genres}</div>
+                    <div class="overview"><strong>Sinopse:</strong><br>${overview}</div>
+                    <p style="margin-top:1rem; color:#aaa; font-size:0.8rem;">Dados por TMDb</p>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        } catch (error) {
+            console.error('Erro nos detalhes:', error);
+            alert('Erro ao carregar detalhes. Tente novamente.');
+        }
+    }
+
+    // Paginação
+    function renderPagination(totalPages) {
+        const maxPages = Math.min(totalPages, 500);
+        if (maxPages <= 1) {
+            paginationDiv.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+        if (currentPage > 1) {
+            html += `<button class="page-btn" data-page="${currentPage - 1}">◀ Anterior</button>`;
+        }
+        
+        let start = Math.max(1, currentPage - 2);
+        let end = Math.min(maxPages, currentPage + 2);
+        for (let i = start; i <= end; i++) {
+            html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        
+        if (currentPage < maxPages) {
+            html += `<button class="page-btn" data-page="${currentPage + 1}">Próximo ▶</button>`;
+        }
+        
+        paginationDiv.innerHTML = html;
+        
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = parseInt(btn.dataset.page);
+                if (page) {
+                    currentPage = page;
+                    loadContent();
+                }
+            });
+        });
+    }
+
+    // Iniciar
+    loadPopular();
+</script>
+</body>
+</html>
