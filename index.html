@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animes & Filmes | Catálogo Completo</title>
+    <title>Animes & Filmes | CatÃ¡logo Completo</title>
     <style>
         * {
             margin: 0;
@@ -81,7 +81,7 @@
             color: transparent;
         }
 
-        /* Botão tema */
+        /* BotÃ£o tema */
         .theme-toggle, .fullscreen-toggle {
             background: var(--bg-primary);
             border: 1px solid var(--border);
@@ -264,7 +264,7 @@
             color: var(--star-color);
         }
 
-        /* Paginação */
+        /* PaginaÃ§Ã£o */
         .pagination {
             display: flex;
             justify-content: center;
@@ -474,9 +474,9 @@
 <div class="top-bar">
     <div class="filters">
         <button class="filter-btn active" data-category="movie">?? Filmes</button>
-        <button class="filter-btn" data-category="tv">?? Animes/Séries</button>
+        <button class="filter-btn" data-category="tv">?? Animes/SÃ©ries</button>
         <select id="genreSelect" class="genre-filter">
-            <option value="">?? Todos os Gêneros</option>
+            <option value="">?? Todos os GÃªneros</option>
         </select>
         <button class="list-btn" id="showWatchlistBtn">?? Assistir Depois</button>
     </div>
@@ -505,13 +505,13 @@
 
 <script>
     // =============================================
-    // CONFIGURAÇÕES
+    // CONFIGURAÃ‡Ã•ES
     // =============================================
-    const API_KEY = 'SUA_API_KEY_AQUI'; // <--- SUBSTITUA PELA SUA CHAVE DO TMDB
+    const API_KEY = 'c6798b14717251bedbd1b520ca954ee1'; // <--- SUBSTITUA PELA SUA CHAVE DO TMDB
     const BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
-    // Estado da aplicação
+    // Estado da aplicaÃ§Ã£o
     let currentCategory = 'movie';
     let currentPage = 1;
     let currentQuery = '';
@@ -541,7 +541,7 @@
     const fullscreenToggle = document.getElementById('fullscreenToggle');
 
     // =============================================
-    // FUNÇÕES DE ARMAZENAMENTO
+    // FUNÃ‡Ã•ES DE ARMAZENAMENTO
     // =============================================
     function saveFavorites() {
         localStorage.setItem('favorites', JSON.stringify(favorites));
@@ -642,7 +642,7 @@
     }
 
     // =============================================
-    // DOWNLOAD DO PÔSTER
+    // DOWNLOAD DO PÃ”STER
     // =============================================
     async function downloadPoster(posterUrl, title) {
         try {
@@ -656,7 +656,7 @@
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
         } catch (error) {
-            alert('Erro ao baixar o pôster. Tente novamente.');
+            alert('Erro ao baixar o pÃ´ster. Tente novamente.');
         }
     }
 
@@ -708,7 +708,7 @@
     });
 
     // =============================================
-    // CARREGAR GÊNEROS
+    // CARREGAR GÃŠNEROS
     // =============================================
     async function loadGenres() {
         try {
@@ -722,20 +722,20 @@
 
             updateGenreSelect();
         } catch (error) {
-            console.error('Erro ao carregar gêneros:', error);
+            console.error('Erro ao carregar gÃªneros:', error);
         }
     }
 
     function updateGenreSelect() {
         const genres = currentCategory === 'movie' ? genresList.movie : genresList.tv;
-        genreSelect.innerHTML = '<option value="">?? Todos os Gêneros</option>';
+        genreSelect.innerHTML = '<option value="">?? Todos os GÃªneros</option>';
         genres.forEach(genre => {
             genreSelect.innerHTML += `<option value="${genre.id}">${genre.name}</option>`;
         });
     }
 
     // =============================================
-    // CARREGAR CONTEÚDO
+    // CARREGAR CONTEÃšDO
     // =============================================
     async function loadContent() {
         showingFavorites = false;
@@ -759,12 +759,12 @@
                 sectionTitle.innerText = '?? Filmes Populares';
             } else {
                 endpoint = `${BASE_URL}/tv/popular?api_key=${API_KEY}&language=pt-BR&page=${currentPage}`;
-                sectionTitle.innerText = '?? Animes/Séries Populares';
+                sectionTitle.innerText = '?? Animes/SÃ©ries Populares';
             }
 
             if (currentGenre) {
                 endpoint += `&with_genres=${currentGenre}`;
-                sectionTitle.innerText += ` • Filtrado por gênero`;
+                sectionTitle.innerText += ` Â• Filtrado por gÃªnero`;
             }
 
             const response = await fetch(endpoint);
@@ -807,12 +807,12 @@
     function displayFavorites() {
         showingFavorites = true;
         showingWatchlist = false;
-        viewFavoritesBtn.textContent = '?? Voltar ao Catálogo';
+        viewFavoritesBtn.textContent = '?? Voltar ao CatÃ¡logo';
         showWatchlistBtn.classList.remove('active');
         sectionTitle.innerText = '? Meus Favoritos';
         
         if (favorites.length === 0) {
-            moviesGrid.innerHTML = '<div class="loading">? Nenhum favorito ainda. Clique no coração dos animes/filmes que você gosta!</div>';
+            moviesGrid.innerHTML = '<div class="loading">? Nenhum favorito ainda. Clique no coraÃ§Ã£o dos animes/filmes que vocÃª gosta!</div>';
             paginationDiv.innerHTML = '';
             return;
         }
@@ -820,7 +820,7 @@
         let filteredFavs = favorites.filter(fav => fav.type === currentCategory);
         
         if (filteredFavs.length === 0) {
-            moviesGrid.innerHTML = `<div class="loading">?? Nenhum favorito na categoria ${currentCategory === 'movie' ? 'Filmes' : 'Animes/Séries'}.</div>`;
+            moviesGrid.innerHTML = `<div class="loading">?? Nenhum favorito na categoria ${currentCategory === 'movie' ? 'Filmes' : 'Animes/SÃ©ries'}.</div>`;
             paginationDiv.innerHTML = '';
             return;
         }
@@ -837,7 +837,7 @@
         sectionTitle.innerText = '?? Assistir Depois';
         
         if (watchlist.length === 0) {
-            moviesGrid.innerHTML = '<div class="loading">?? Nenhum item na lista "Assistir Depois". Clique no ícone ?? para adicionar!</div>';
+            moviesGrid.innerHTML = '<div class="loading">?? Nenhum item na lista "Assistir Depois". Clique no Ã­cone ?? para adicionar!</div>';
             paginationDiv.innerHTML = '';
             return;
         }
@@ -845,7 +845,7 @@
         let filteredWatchlist = watchlist.filter(item => item.type === currentCategory);
         
         if (filteredWatchlist.length === 0) {
-            moviesGrid.innerHTML = `<div class="loading">?? Nenhum item na categoria ${currentCategory === 'movie' ? 'Filmes' : 'Animes/Séries'}.</div>`;
+            moviesGrid.innerHTML = `<div class="loading">?? Nenhum item na categoria ${currentCategory === 'movie' ? 'Filmes' : 'Animes/SÃ©ries'}.</div>`;
             paginationDiv.innerHTML = '';
             return;
         }
@@ -1000,7 +1000,7 @@
     }
 
     // =============================================
-    // PAGINAÇÃO
+    // PAGINAÃ‡ÃƒO
     // =============================================
     function renderPagination(totalPages) {
         if (showingFavorites || showingWatchlist) return;
@@ -1023,7 +1023,7 @@
         }
         
         if (currentPage < maxPages) {
-            html += `<button class="page-btn" data-page="${currentPage + 1}">Próximo ?</button>`;
+            html += `<button class="page-btn" data-page="${currentPage + 1}">PrÃ³ximo ?</button>`;
         }
         
         paginationDiv.innerHTML = html;
@@ -1053,8 +1053,8 @@
             const year = type === 'movie' 
                 ? (data.release_date ? data.release_date.split('-')[0] : '?')
                 : (data.first_air_date ? data.first_air_date.split('-')[0] : '?');
-            const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'Gênero não informado';
-            const overview = data.overview || 'Sinopse não disponível.';
+            const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'GÃªnero nÃ£o informado';
+            const overview = data.overview || 'Sinopse nÃ£o disponÃ­vel.';
             const rating = data.vote_average ? data.vote_average.toFixed(1) : '0';
             const userRating = getUserRating(id, type);
             
@@ -1078,12 +1078,12 @@
                     </div>
                     
                     <div class="modal-actions">
-                        <button class="modal-btn" id="modalDownloadBtn">?? Baixar Pôster</button>
+                        <button class="modal-btn" id="modalDownloadBtn">?? Baixar PÃ´ster</button>
                         <button class="modal-btn secondary" id="modalTrailerBtn">?? Assistir Trailer</button>
                     </div>
                     
                     <div class="trailer-container" id="modalTrailerContainer">
-                        ${trailerKey ? `<iframe src="https://www.youtube.com/embed/${trailerKey}" frameborder="0" allowfullscreen></iframe>` : '<p>Trailer não disponível no momento.</p>'}
+                        ${trailerKey ? `<iframe src="https://www.youtube.com/embed/${trailerKey}" frameborder="0" allowfullscreen></iframe>` : '<p>Trailer nÃ£o disponÃ­vel no momento.</p>'}
                     </div>
                     
                     <div class="share-buttons">
@@ -1100,7 +1100,7 @@
             
             modal.style.display = 'flex';
             
-            // Avaliação no modal
+            // AvaliaÃ§Ã£o no modal
             const ratingStars = document.getElementById('modalRatingStars');
             if (ratingStars) {
                 ratingStars.querySelectorAll('span').forEach(star => {
