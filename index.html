@@ -2,183 +2,204 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime & Filmes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Meu Catálogo · Filmes e Animes</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
-            color: #3C3E57;
-            min-height: 100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0b0b14;
+            color: #f0f0f0;
+            padding-bottom: 3rem;
+        }
+
         header {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 1rem 2rem;
+            background: #0f0f1acc;
+            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            border-bottom: 1px solid #2a2a3a;
+            padding: 0.8rem 1.2rem;
         }
-        .header-content {
-            max-width: 1400px;
+
+        .header-container {
+            max-width: 1300px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
+
         h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #e74c3c, #f39c12);
-            -webkit-background-clip: text;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #e74c3c, #f1c40f);
             background-clip: text;
+            -webkit-background-clip: text;
             color: transparent;
         }
-        .search-box { display: flex; gap: 0.5rem; }
+
+        .search-box {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+
         .search-box input {
-            padding: 0.7rem 1rem;
-            border-radius: 30px;
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 60px;
             border: none;
-            width: 250px;
-            font-size: 1rem;
-            background: #2a2a3a;
-            color: #fff;
+            background: #1e1e2e;
+            color: white;
+            font-size: 0.9rem;
         }
+
         .search-box button {
-            padding: 0.7rem 1.2rem;
-            border-radius: 30px;
-            border: none;
             background: #e74c3c;
-            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 60px;
             font-weight: bold;
+            color: white;
             cursor: pointer;
         }
-        .categories-menu {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 0.8rem 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .categories-scroll {
-            max-width: 1400px;
-            margin: 0 auto;
+
+        .tipo-botoes {
             display: flex;
-            gap: 0.8rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-        .categories-scroll::-webkit-scrollbar { height: 4px; }
-        .categories-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .categories-scroll::-webkit-scrollbar-thumb { background: #e74c3c; border-radius: 10px; }
-        .category-chip {
-            background: transparent;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            white-space: nowrap;
-        }
-        .category-chip.active, .category-chip:hover { background: #e74c3c; color: white; }
-        .main-filters {
-            max-width: 1400px;
-            margin: 1rem auto 0;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            margin: 1rem 1rem 0.5rem 1rem;
             flex-wrap: wrap;
-            gap: 1rem;
         }
-        .type-filters { display: flex; gap: 1rem; }
-        .type-btn {
+
+        .tipo-btn {
             background: transparent;
             border: 1px solid #e74c3c;
             color: #e74c3c;
-            padding: 0.5rem 1.5rem;
-            border-radius: 30px;
-            cursor: pointer;
+            padding: 6px 20px;
+            border-radius: 40px;
             font-weight: bold;
+            cursor: pointer;
         }
-        .type-btn.active { background: #e74c3c; color: white; }
-        .action-btn {
+
+        .tipo-btn.ativo {
             background: #e74c3c;
             color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
+        }
+
+        /* Menu de Gêneros */
+        .generos-menu {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.8rem 1.2rem;
+            margin-top: 0.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+
+        .generos-scroll {
+            display: inline-flex;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .genero-chip {
+            background: transparent;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 5px 16px;
+            border-radius: 40px;
             cursor: pointer;
-            border: none;
-            font-weight: bold;
+            font-size: 0.8rem;
+            transition: all 0.2s;
         }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
-            border-left: 4px solid #e74c3c;
+
+        .genero-chip.ativo {
+            background: #e74c3c;
+            color: white;
         }
-        .movies-grid {
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 1.2rem;
+        }
+
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 1.3rem;
+            margin: 1.5rem 0;
         }
+
         .card {
-            background: #1e1e2a;
-            border-radius: 12px;
+            background: #161622;
+            border-radius: 20px;
             overflow: hidden;
             transition: transform 0.2s;
             cursor: pointer;
-            position: relative;
+            border: 1px solid #28283a;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .card img { width: 100%; height: 280px; object-fit: cover; }
-        .card-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 8px;
-            z-index: 2;
+
+        .card:hover {
+            transform: translateY(-6px);
         }
-        .action-icon {
-            background: rgba(0,0,0,0.7);
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
+
+        .card img {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            display: block;
         }
-        .card-info { padding: 0.8rem; }
+
+        .card-info {
+            padding: 10px;
+        }
+
         .card-info h3 {
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .card-info p { font-size: 0.8rem; color: #aaa; display: flex; justify-content: space-between; }
-        .rating { color: #f39c12; }
-        .pagination {
+
+        .ano-rating {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .paginacao {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
+            gap: 8px;
             flex-wrap: wrap;
+            margin: 2rem 0;
         }
-        .page-btn {
-            background: #1e1e2a;
-            border: 1px solid rgba(255,255,255,0.1);
+
+        .pag-btn {
+            background: #1e1e2e;
+            border: none;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 30px;
             cursor: pointer;
         }
-        .page-btn.active { background: #e74c3c; color: white; }
+
+        .pag-btn.ativo {
+            background: #e74c3c;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -186,418 +207,514 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: #000000dd;
+            backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            overflow-y: auto;
-            padding: 2rem;
+            padding: 16px;
         }
-        .modal-content {
-            background: #1e1e2a;
-            max-width: 900px;
+
+        .modal-card {
+            background: #181828;
+            max-width: 850px;
             width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
+            border-radius: 32px;
             display: flex;
             flex-wrap: wrap;
-            position: relative;
+            overflow: auto;
+            max-height: 90vh;
         }
-        .modal-poster { width: 280px; object-fit: cover; }
-        .modal-info { flex: 1; padding: 1.5rem; }
-        .modal-info h2 { margin-bottom: 0.5rem; }
-        .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 1rem 0; }
-        .modal-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
+
+        .modal-poster {
+            width: 240px;
+            object-fit: cover;
+            border-radius: 24px 0 0 24px;
         }
-        .modal-btn.secondary { background: #2c3e50; }
-        .trailer-container { margin-top: 1rem; display: none; }
-        .trailer-container iframe { width: 100%; height: 250px; border-radius: 8px; }
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: white;
-            background: rgba(0,0,0,0.5);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+
+        .modal-info {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .modal-acoes {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
         }
-        .share-buttons { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
-        .share-btn {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+
+        .btn {
+            background: #e74c3c;
             border: none;
-            cursor: pointer;
-            font-size: 0.8rem;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 40px;
             font-weight: bold;
+            cursor: pointer;
         }
-        .share-fb { background: #1877f2; color: white; }
-        .share-tw { background: #1da1f2; color: white; }
-        .share-wa { background: #25d366; color: white; }
-        .share-telegram { background: #0088cc; color: white; }
-        .loading { text-align: center; padding: 3rem; font-size: 1.2rem; color: #aaa; }
-        footer { text-align: center; padding: 2rem; background: rgba(0,0,0,0.5); margin-top: 2rem; }
-        @media (max-width: 700px) {
-            .header-content, .main-filters { flex-direction: column; align-items: stretch; }
-            .search-box input { width: 100%; }
-            .modal-content { flex-direction: column; }
-            .modal-poster { width: 100%; height: auto; }
+
+        .btn-outline {
+            background: #2c2c42;
+        }
+
+        .fechar-modal {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            margin: 12px;
+        }
+
+        .trailer-box {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .trailer-box iframe {
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+        }
+
+        .redes {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .rede-btn {
+            background: #2c3e50;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .erro {
+            text-align: center;
+            padding: 40px;
+            color: #f39c12;
+        }
+
+        footer {
+            text-align: center;
+            opacity: 0.6;
+            font-size: 0.7rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .modal-poster { width: 100%; border-radius: 24px 24px 0 0; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-content">
-        <h1>🎬 Anime & Filmes</h1>
+    <div class="header-container">
+        <h1>🎬 MeuCatálogo</h1>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar filme, anime, série..." />
-            <button id="searchBtn">🔍 Buscar</button>
+            <input type="text" id="inputBusca" placeholder="Buscar filme, anime, série...">
+            <button id="btnBuscar">Buscar</button>
         </div>
     </div>
 </header>
 
-<div class="categories-menu">
-    <div class="categories-scroll" id="categoriesList">
-        <button class="category-chip active" data-genre="">🎭 Todos</button>
-        <div class="loading" style="padding: 0;">Carregando...</div>
-    </div>
+<div class="tipo-botoes">
+    <button class="tipo-btn ativo" data-tipo="movie">🎬 Filmes</button>
+    <button class="tipo-btn" data-tipo="tv">📺 Animes / Séries</button>
 </div>
 
-<div class="main-filters">
-    <div class="type-filters">
-        <button class="type-btn active" data-type="movie">🎬 Filmes</button>
-        <button class="type-btn" data-type="tv">📺 Animes/Séries</button>
-    </div>
-    <div>
-        <button class="action-btn" id="showFavoritesBtn">⭐ Favoritos</button>
-        <button class="action-btn" id="showWatchlistBtn">📋 Assistir Depois</button>
+<!-- Menu de Gêneros (será preenchido automaticamente) -->
+<div class="generos-menu" id="generosMenu">
+    <div class="generos-scroll" id="generosList">
+        <button class="genero-chip ativo" data-genero="">🎭 Todos</button>
+        <span style="color:#888;">Carregando gêneros...</span>
     </div>
 </div>
 
 <div class="container">
-    <h2 class="section-title" id="sectionTitle">Populares</h2>
-    <div class="movies-grid" id="moviesGrid">
-        <div class="loading">🎬 Carregando...</div>
+    <h2 id="tituloSecao">🔥 Populares</h2>
+    <div id="grade" class="grid">
+        <div class="erro">Carregando catálogo...</div>
     </div>
-    <div class="pagination" id="pagination"></div>
+    <div id="paginacao" class="paginacao"></div>
 </div>
 
 <footer>
-    <p>Dados por TMDb |percyamutombenne-stack/meu_site_Filmes |todos direitos reservados| site em desenvolvimento</p>
+    <div style="text-align: center; padding-top: 1rem;">
+        <p>Dados fornecidos por <a href="https://www.themoviedb.org/" target="_blank" style="color: #e74c3c;">The Movie Database (TMDb)</a></p>
+        <p style="font-size: 0.7rem;">Este produto utiliza a API do TMDb mas não é endossado ou certificado pelo TMDb.</p>
+    </div>
 </footer>
 
-<div class="modal" id="modal">
-    <span class="close-modal">&times;</span>
-    <div class="modal-content" id="modalContent"></div>
+<div id="modal" class="modal">
+    <div class="modal-card">
+        <span class="fechar-modal" id="fecharModalBtn">&times;</span>
+        <img id="modalPoster" class="modal-poster" src="">
+        <div class="modal-info">
+            <h2 id="modalTitulo"></h2>
+            <p id="modalSinopse" style="margin: 12px 0;"></p>
+            <div id="modalBotoes" class="modal-acoes"></div>
+            <div id="trailerContainer" class="trailer-box"></div>
+            <div id="redesSociais" class="redes"></div>
+        </div>
+    </div>
 </div>
 
 <script>
+    // =============================================
+    // CONFIGURAÇÕES
+    // =============================================
     const API_KEY = 'c6798b14717251bedbd1b520ca954ee1';
-    const BASE_URL = 'https://api.themoviedb.org/3';
-    const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+    const BASE = 'https://api.themoviedb.org/3';
+    const IMG_BASE = 'https://image.tmdb.org/t/p/w400';
 
-    let currentType = 'movie';
-    let currentPage = 1;
-    let currentQuery = '';
-    let currentGenre = '';
-    let showingFavorites = false;
-    let showingWatchlist = false;
-    
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    let tipoAtual = 'movie';      // 'movie' ou 'tv'
+    let paginaAtual = 1;
+    let buscaAtual = '';
+    let generoAtual = '';         // ID do gênero selecionado
+    let totalPaginas = 1;
+    let listaGeneros = [];         // Guarda os gêneros carregados
 
-    const moviesGrid = document.getElementById('moviesGrid');
-    const sectionTitle = document.getElementById('sectionTitle');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
+    // Elementos DOM
+    const gradeEl = document.getElementById('grade');
+    const tituloSecao = document.getElementById('tituloSecao');
+    const inputBusca = document.getElementById('inputBusca');
+    const btnBuscar = document.getElementById('btnBuscar');
+    const paginacaoDiv = document.getElementById('paginacao');
+    const generosList = document.getElementById('generosList');
     const modal = document.getElementById('modal');
-    const modalContent = document.getElementById('modalContent');
-    const paginationDiv = document.getElementById('pagination');
-    const categoriesList = document.getElementById('categoriesList');
+    const modalPoster = document.getElementById('modalPoster');
+    const modalTitulo = document.getElementById('modalTitulo');
+    const modalSinopse = document.getElementById('modalSinopse');
+    const modalBotoes = document.getElementById('modalBotoes');
+    const trailerContainer = document.getElementById('trailerContainer');
+    const redesSociais = document.getElementById('redesSociais');
 
-    function saveFavorites() { localStorage.setItem('favorites', JSON.stringify(favorites)); }
-    function saveWatchlist() { localStorage.setItem('watchlist', JSON.stringify(watchlist)); }
-    function isFavorite(id) { return favorites.some(fav => fav.id === id && fav.type === currentType); }
-    function isInWatchlist(id) { return watchlist.some(w => w.id === id && w.type === currentType); }
+    // Fechar modal
+    document.getElementById('fecharModalBtn').onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
 
-    function addFavorite(item) {
-        if (!isFavorite(item.id)) {
-            favorites.push({
-                id: item.id, type: currentType,
-                title: currentType === 'movie' ? item.title : item.name,
-                poster: item.poster_path,
-                year: currentType === 'movie' ? (item.release_date ? item.release_date.split('-')[0] : '?') : (item.first_air_date ? item.first_air_date.split('-')[0] : '?'),
-                rating: item.vote_average
-            });
-            saveFavorites();
-        }
-    }
-    function removeFavorite(id) { favorites = favorites.filter(fav => !(fav.id === id && fav.type === currentType)); saveFavorites(); }
-    function addToWatchlist(item) {
-        if (!isInWatchlist(item.id)) {
-            watchlist.push({
-                id: item.id, type: currentType,
-                title: currentType === 'movie' ? item.title : item.name,
-                poster: item.poster_path,
-                year: currentType === 'movie' ? (item.release_date ? item.release_date.split('-')[0] : '?') : (item.first_air_date ? item.first_air_date.split('-')[0] : '?'),
-                rating: item.vote_average
-            });
-            saveWatchlist();
-        }
-    }
-    function removeFromWatchlist(id) { watchlist = watchlist.filter(w => !(w.id === id && w.type === currentType)); saveWatchlist(); }
-    function toggleFavorite(item) { if (isFavorite(item.id)) removeFavorite(item.id); else addFavorite(item); refreshView(); }
-    function toggleWatchlist(item) { if (isInWatchlist(item.id)) removeFromWatchlist(item.id); else addToWatchlist(item); refreshView(); }
-    function refreshView() { if (showingFavorites) displayFavorites(); else if (showingWatchlist) displayWatchlist(); else loadContent(); }
-
-    async function loadGenres() {
+    // =============================================
+    // CARREGAR GÊNEROS DA API
+    // =============================================
+    async function carregarGeneros() {
         try {
-            const endpoint = `${BASE_URL}/genre/${currentType}/list?api_key=${API_KEY}&language=pt-BR`;
+            const endpoint = `${BASE}/genre/${tipoAtual}/list?api_key=${API_KEY}&language=pt-BR`;
             const response = await fetch(endpoint);
             const data = await response.json();
-            categoriesList.innerHTML = '<button class="category-chip active" data-genre="">🎭 Todos</button>';
-            if (data.genres) {
-                data.genres.forEach(genre => {
-                    categoriesList.innerHTML += `<button class="category-chip" data-genre="${genre.id}">${genre.name}</button>`;
-                });
-            }
-            document.querySelectorAll('.category-chip').forEach(btn => {
+            listaGeneros = data.genres || [];
+            
+            // Montar botões de gênero
+            let html = `<button class="genero-chip ativo" data-genero="">🎭 Todos</button>`;
+            listaGeneros.forEach(genero => {
+                html += `<button class="genero-chip" data-genero="${genero.id}">${genero.name}</button>`;
+            });
+            generosList.innerHTML = html;
+            
+            // Adicionar eventos aos botões de gênero
+            document.querySelectorAll('.genero-chip').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    document.querySelectorAll('.category-chip').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentGenre = btn.dataset.genre;
-                    currentPage = 1;
-                    showingFavorites = false;
-                    showingWatchlist = false;
-                    loadContent();
+                    // Remove classe 'ativo' de todos
+                    document.querySelectorAll('.genero-chip').forEach(b => b.classList.remove('ativo'));
+                    btn.classList.add('ativo');
+                    
+                    // Atualiza o gênero atual e recarrega
+                    generoAtual = btn.getAttribute('data-genero');
+                    paginaAtual = 1;
+                    buscaAtual = '';
+                    inputBusca.value = '';
+                    carregarConteudo();
                 });
             });
-        } catch(e) { console.error('Erro gêneros:', e); }
+        } catch (error) {
+            console.error('Erro ao carregar gêneros:', error);
+            generosList.innerHTML = '<button class="genero-chip ativo" data-genero="">🎭 Todos</button>';
+        }
     }
 
-    async function loadContent() {
-        showingFavorites = false; showingWatchlist = false;
-        if (currentQuery) await searchContent();
-        else await loadPopular();
-    }
+    // =============================================
+    // ALTERNAR ENTRE FILMES / ANIMES
+    // =============================================
+    document.querySelectorAll('.tipo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            tipoAtual = btn.getAttribute('data-tipo');
+            
+            // Resetar filtros
+            buscaAtual = '';
+            generoAtual = '';
+            paginaAtual = 1;
+            inputBusca.value = '';
+            
+            // Recarregar gêneros do novo tipo
+            carregarGeneros();
+            carregarConteudo();
+        });
+    });
 
-    async function loadPopular() {
-        moviesGrid.innerHTML = '<div class="loading">🎬 Carregando...</div>';
+    // =============================================
+    // BUSCA
+    // =============================================
+    btnBuscar.addEventListener('click', () => {
+        buscaAtual = inputBusca.value.trim();
+        generoAtual = '';  // Resetar gênero quando busca
+        paginaAtual = 1;
+        
+        // Resetar botão de gênero ativo
+        document.querySelectorAll('.genero-chip').forEach(btn => {
+            btn.classList.remove('ativo');
+            if (btn.getAttribute('data-genero') === '') {
+                btn.classList.add('ativo');
+            }
+        });
+        
+        carregarConteudo();
+    });
+    
+    inputBusca.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') btnBuscar.click();
+    });
+
+    // =============================================
+    // CARREGAR CONTEÚDO PRINCIPAL
+    // =============================================
+    async function carregarConteudo() {
+        gradeEl.innerHTML = '<div class="erro">⏳ Carregando...</div>';
+        
         try {
-            let endpoint = `${BASE_URL}/${currentType}/popular?api_key=${API_KEY}&language=pt-BR&page=${currentPage}`;
-            if (currentGenre) endpoint += `&with_genres=${currentGenre}`;
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            displayItems(data.results);
-            renderPagination(data.total_pages);
-            sectionTitle.innerText = currentType === 'movie' ? '🎬 Filmes Populares' : '📺 Animes/Séries Populares';
-            if (currentGenre) sectionTitle.innerText += ` • Filtrado`;
-        } catch(e) { moviesGrid.innerHTML = '<div class="loading">Erro ao carregar</div>'; }
+            let url = '';
+            
+            if (buscaAtual !== '') {
+                // MODO BUSCA
+                url = `${BASE}/search/${tipoAtual}?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(buscaAtual)}&page=${paginaAtual}`;
+                tituloSecao.innerText = `🔍 Resultados: "${buscaAtual}"`;
+            } else if (generoAtual !== '') {
+                // MODO FILTRO POR GÊNERO
+                // Descobrir o nome do gênero para mostrar no título
+                const generoEncontrado = listaGeneros.find(g => g.id == generoAtual);
+                const nomeGenero = generoEncontrado ? generoEncontrado.name : 'Gênero';
+                tituloSecao.innerText = `🎭 ${nomeGenero} - ${tipoAtual === 'movie' ? 'Filmes' : 'Animes/Séries'}`;
+                
+                // URL com filtro de gênero usando discover
+                url = `${BASE}/discover/${tipoAtual}?api_key=${API_KEY}&language=pt-BR&with_genres=${generoAtual}&sort_by=popularity.desc&page=${paginaAtual}`;
+            } else {
+                // MODO POPULARES (padrão)
+                url = `${BASE}/${tipoAtual}/popular?api_key=${API_KEY}&language=pt-BR&page=${paginaAtual}`;
+                tituloSecao.innerText = tipoAtual === 'movie' ? '🎬 Filmes Populares' : '📺 Animes / Séries Populares';
+            }
+
+            console.log('URL:', url); // Para debug
+            const resposta = await fetch(url);
+            const dados = await resposta.json();
+            
+            if (!dados.results || dados.results.length === 0) {
+                gradeEl.innerHTML = '<div class="erro">😕 Nada encontrado. Tente outro filtro ou busca.</div>';
+                paginacaoDiv.innerHTML = '';
+                return;
+            }
+
+            totalPaginas = Math.min(dados.total_pages, 500);
+            renderizarCards(dados.results);
+            renderizarPaginacao();
+            
+        } catch (erro) {
+            console.error('Erro:', erro);
+            gradeEl.innerHTML = '<div class="erro">❌ Erro ao carregar. Verifique sua conexão.</div>';
+        }
     }
 
-    async function searchContent() {
-        moviesGrid.innerHTML = '<div class="loading">🔍 Buscando...</div>';
-        try {
-            let endpoint = `${BASE_URL}/search/${currentType}?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(currentQuery)}&page=${currentPage}`;
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            displayItems(data.results);
-            renderPagination(data.total_pages);
-            sectionTitle.innerText = `🔎 Resultados: "${currentQuery}"`;
-        } catch(e) { moviesGrid.innerHTML = '<div class="loading">Erro na busca</div>'; }
-    }
+    // =============================================
+    // RENDERIZAR CARDS
+    // =============================================
+    function renderizarCards(lista) {
+        gradeEl.innerHTML = '';
+        
+        for (let item of lista) {
+            const titulo = tipoAtual === 'movie' ? item.title : (item.name || item.original_name);
+            const ano = tipoAtual === 'movie'
+                ? (item.release_date ? item.release_date.split('-')[0] : '?')
+                : (item.first_air_date ? item.first_air_date.split('-')[0] : '?');
+            const nota = item.vote_average ? item.vote_average.toFixed(1) : '0';
+            
+            let imgUrl = 'https://placehold.co/300x450?text=Sem+Imagem';
+            if (item.poster_path) imgUrl = IMG_BASE + item.poster_path;
 
-    function displayItems(items) {
-        if (!items || items.length === 0) { moviesGrid.innerHTML = '<div class="loading">Nenhum resultado</div>'; paginationDiv.innerHTML = ''; return; }
-        moviesGrid.innerHTML = '';
-        items.forEach(item => {
-            let imageUrl = 'https://via.placeholder.com/300x450?text=Sem+Imagem';
-            if (item.poster_path) imageUrl = IMG_URL + item.poster_path;
-            const title = currentType === 'movie' ? item.title : (item.name || item.original_name);
-            const year = currentType === 'movie' ? (item.release_date ? item.release_date.split('-')[0] : '?') : (item.first_air_date ? item.first_air_date.split('-')[0] : '?');
-            const rating = item.vote_average ? item.vote_average.toFixed(1) : '0';
             const card = document.createElement('div');
             card.classList.add('card');
             card.innerHTML = `
-                <div class="card-actions">
-                    <div class="action-icon favorite-icon">${isFavorite(item.id) ? '❤️' : '🤍'}</div>
-                    <div class="action-icon watchlist-icon">${isInWatchlist(item.id) ? '📋✅' : '📋'}</div>
-                </div>
-                <img src="${imageUrl}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x450?text=Erro'">
+                <img src="${imgUrl}" alt="${titulo}" loading="lazy" onerror="this.src='https://placehold.co/300x450?text=Erro'">
                 <div class="card-info">
-                    <h3>${title.substring(0, 35)}${title.length > 35 ? '...' : ''}</h3>
-                    <p><span>${year}</span> <span class="rating">⭐ ${rating}</span></p>
+                    <h3>${titulo}</h3>
+                    <div class="ano-rating"><span>${ano}</span> <span>⭐ ${nota}</span></div>
                 </div>
             `;
-            card.addEventListener('click', (e) => { if (!e.target.closest('.action-icon')) showDetails(item.id); });
-            card.querySelector('.favorite-icon').addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(item); e.target.textContent = isFavorite(item.id) ? '❤️' : '🤍'; });
-            card.querySelector('.watchlist-icon').addEventListener('click', (e) => { e.stopPropagation(); toggleWatchlist(item); e.target.textContent = isInWatchlist(item.id) ? '📋✅' : '📋'; });
-            moviesGrid.appendChild(card);
-        });
+            card.addEventListener('click', () => abrirDetalhes(item.id));
+            gradeEl.appendChild(card);
+        }
     }
 
-    function displayFavorites() {
-        showingFavorites = true; showingWatchlist = false;
-        sectionTitle.innerText = '⭐ Meus Favoritos';
-        const filtered = favorites.filter(fav => fav.type === currentType);
-        if (filtered.length === 0) { moviesGrid.innerHTML = '<div class="loading">✨ Nenhum favorito</div>'; paginationDiv.innerHTML = ''; return; }
-        moviesGrid.innerHTML = '';
-        filtered.forEach(item => {
-            const posterUrl = item.poster ? IMG_URL + item.poster : 'https://via.placeholder.com/300x450?text=Sem+Imagem';
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.innerHTML = `
-                <div class="card-actions"><div class="action-icon favorite-icon">❤️</div></div>
-                <img src="${posterUrl}" alt="${item.title}">
-                <div class="card-info"><h3>${item.title}</h3><p><span>${item.year || '?'}</span> <span class="rating">⭐ ${item.rating ? item.rating.toFixed(1) : '0'}</span></p></div>
-            `;
-            card.addEventListener('click', () => showDetails(item.id));
-            card.querySelector('.favorite-icon').addEventListener('click', (e) => { e.stopPropagation(); removeFavorite(item.id); displayFavorites(); });
-            moviesGrid.appendChild(card);
-        });
-        paginationDiv.innerHTML = '';
-    }
+    // =============================================
+    // DETALHES, TRAILER E COMPARTILHAR
+    // =============================================
+    let itemIdAtual = null;
+    
+    async function abrirDetalhes(id) {
+        itemIdAtual = id;
+        modal.style.display = 'flex';
+        modalBotoes.innerHTML = '';
+        trailerContainer.innerHTML = '';
+        trailerContainer.style.display = 'none';
+        redesSociais.innerHTML = '';
 
-    function displayWatchlist() {
-        showingWatchlist = true; showingFavorites = false;
-        sectionTitle.innerText = '📋 Assistir Depois';
-        const filtered = watchlist.filter(w => w.type === currentType);
-        if (filtered.length === 0) { moviesGrid.innerHTML = '<div class="loading">📋 Nenhum item</div>'; paginationDiv.innerHTML = ''; return; }
-        moviesGrid.innerHTML = '';
-        filtered.forEach(item => {
-            const posterUrl = item.poster ? IMG_URL + item.poster : 'https://via.placeholder.com/300x450?text=Sem+Imagem';
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.innerHTML = `
-                <div class="card-actions"><div class="action-icon watchlist-icon">📋✅</div></div>
-                <img src="${posterUrl}" alt="${item.title}">
-                <div class="card-info"><h3>${item.title}</h3><p><span>${item.year || '?'}</span> <span class="rating">⭐ ${item.rating ? item.rating.toFixed(1) : '0'}</span></p></div>
-            `;
-            card.addEventListener('click', () => showDetails(item.id));
-            card.querySelector('.watchlist-icon').addEventListener('click', (e) => { e.stopPropagation(); removeFromWatchlist(item.id); displayWatchlist(); });
-            moviesGrid.appendChild(card);
-        });
-        paginationDiv.innerHTML = '';
-    }
-
-    async function showDetails(id) {
         try {
-            const response = await fetch(`${BASE_URL}/${currentType}/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`);
-            const data = await response.json();
-            const posterUrl = data.poster_path ? IMG_URL + data.poster_path : 'https://via.placeholder.com/300x450?text=Sem+Imagem';
-            const title = currentType === 'movie' ? data.title : data.name;
-            const year = currentType === 'movie' ? (data.release_date ? data.release_date.split('-')[0] : '?') : (data.first_air_date ? data.first_air_date.split('-')[0] : '?');
-            const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'Gênero não informado';
-            const overview = data.overview || 'Sinopse não disponível';
-            const rating = data.vote_average ? data.vote_average.toFixed(1) : '0';
+            const urlDetalhes = `${BASE}/${tipoAtual}/${id}?api_key=${API_KEY}&language=pt-BR`;
+            const res = await fetch(urlDetalhes);
+            const dados = await res.json();
+
+            const titulo = tipoAtual === 'movie' ? dados.title : dados.name;
+            const ano = tipoAtual === 'movie'
+                ? (dados.release_date ? dados.release_date.split('-')[0] : '')
+                : (dados.first_air_date ? dados.first_air_date.split('-')[0] : '');
+            const sinopse = dados.overview || 'Sem descrição no momento.';
+            
+            let posterUrl = 'https://placehold.co/300x450?text=Poster';
+            if (dados.poster_path) posterUrl = IMG_BASE + dados.poster_path;
+
+            modalPoster.src = posterUrl;
+            modalTitulo.innerText = `${titulo} ${ano ? `(${ano})` : ''}`;
+            modalSinopse.innerText = sinopse;
+
+            // Buscar trailer
             let trailerKey = null;
-            if (data.videos && data.videos.results) {
-                const trailer = data.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
-                if (trailer) trailerKey = trailer.key;
-            }
-            const currentUrl = window.location.href;
-            modalContent.innerHTML = `
-                <img class="modal-poster" src="${posterUrl}" alt="${title}">
-                <div class="modal-info">
-                    <h2>${title} (${year})</h2>
-                    <div class="details">⭐ ${rating} | ${genres}</div>
-                    <div class="overview"><strong>Sinopse:</strong><br>${overview}</div>
-                    <div class="modal-actions">
-                        ${trailerKey ? `<button class="modal-btn" id="trailerBtn">🎬 Assistir Trailer</button>` : '<button class="modal-btn secondary" disabled>🚫 Sem Trailer</button>'}
-                        <button class="modal-btn secondary" id="shareModalBtn">📢 Compartilhar</button>
-                    </div>
-                    <div class="trailer-container" id="trailerContainer">${trailerKey ? `<iframe src="https://www.youtube.com/embed/${trailerKey}" frameborder="0" allowfullscreen></iframe>` : ''}</div>
-                    <div class="share-buttons" id="shareModalButtons" style="display:none;">
-                        <button class="share-btn share-fb" data-platform="facebook">📘 Facebook</button>
-                        <button class="share-btn share-tw" data-platform="twitter">🐦 Twitter</button>
-                        <button class="share-btn share-wa" data-platform="whatsapp">💬 WhatsApp</button>
-                        <button class="share-btn share-telegram" data-platform="telegram">✈️ Telegram</button>
-                    </div>
-                    <p style="margin-top:1rem; color:#aaa; font-size:0.8rem;">Dados por TMDb</p>
-                </div>
-            `;
-            modal.style.display = 'flex';
+            try {
+                const videoRes = await fetch(`${BASE}/${tipoAtual}/${id}/videos?api_key=${API_KEY}&language=pt-BR`);
+                const videoData = await videoRes.json();
+                const trailerObj = videoData.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+                if (trailerObj) trailerKey = trailerObj.key;
+            } catch(e) { console.warn('trailer não encontrado'); }
+
+            // Botão trailer
             if (trailerKey) {
-                const trailerBtn = document.getElementById('trailerBtn');
-                const trailerContainer = document.getElementById('trailerContainer');
-                trailerContainer.style.display = 'none';
-                trailerBtn.onclick = () => {
-                    if (trailerContainer.style.display === 'none') { trailerContainer.style.display = 'block'; trailerBtn.textContent = '🔽 Esconder Trailer'; }
-                    else { trailerContainer.style.display = 'none'; trailerBtn.textContent = '🎬 Assistir Trailer'; }
+                const btnTrailer = document.createElement('button');
+                btnTrailer.innerText = '🎬 Assistir Trailer';
+                btnTrailer.classList.add('btn');
+                btnTrailer.onclick = () => {
+                    if (trailerContainer.style.display === 'flex') {
+                        trailerContainer.style.display = 'none';
+                        btnTrailer.innerText = '🎬 Assistir Trailer';
+                    } else {
+                        trailerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}" frameborder="0" allowfullscreen></iframe>`;
+                        trailerContainer.style.display = 'flex';
+                        btnTrailer.innerText = '🔽 Esconder Trailer';
+                    }
                 };
+                modalBotoes.appendChild(btnTrailer);
+            } else {
+                const semTrailer = document.createElement('button');
+                semTrailer.innerText = '🚫 Trailer indisponível';
+                semTrailer.classList.add('btn', 'btn-outline');
+                semTrailer.disabled = true;
+                modalBotoes.appendChild(semTrailer);
             }
-            const shareModalBtn = document.getElementById('shareModalBtn');
-            const shareModalButtons = document.getElementById('shareModalButtons');
-            shareModalBtn.onclick = () => {
-                if (shareModalButtons.style.display === 'none') { shareModalButtons.style.display = 'flex'; shareModalBtn.textContent = '🔽 Esconder'; }
-                else { shareModalButtons.style.display = 'none'; shareModalBtn.textContent = '📢 Compartilhar'; }
+
+            // Botão Onde Assistir (busca no Google)
+            const btnOndeAssistir = document.createElement('button');
+            btnOndeAssistir.innerText = '🔍 Onde Assistir';
+            btnOndeAssistir.classList.add('btn', 'btn-outline');
+            btnOndeAssistir.onclick = () => {
+                const buscaGoogle = encodeURIComponent(`${titulo} onde assistir`);
+                window.open(`https://www.google.com/search?q=${buscaGoogle}`, '_blank');
             };
-            document.querySelectorAll('.share-btn').forEach(btn => {
-                btn.onclick = () => {
-                    const platform = btn.dataset.platform;
-                    const text = `🎬 "${title}" (${year}) - Recomendo!`;
-                    const url = encodeURIComponent(currentUrl);
-                    let link = '';
-                    if (platform === 'facebook') link = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-                    else if (platform === 'twitter') link = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
-                    else if (platform === 'whatsapp') link = `https://wa.me/?text=${encodeURIComponent(text + ' ' + currentUrl)}`;
-                    else if (platform === 'telegram') link = `https://t.me/share/url?url=${url}&text=${encodeURIComponent(text)}`;
-                    window.open(link, '_blank', 'width=600,height=400');
-                };
-            });
-        } catch(e) { alert('Erro ao carregar detalhes'); }
+            modalBotoes.appendChild(btnOndeAssistir);
+
+            // Botão compartilhar
+            const btnShare = document.createElement('button');
+            btnShare.innerText = '📢 Compartilhar';
+            btnShare.classList.add('btn', 'btn-outline');
+            let redesVisiveis = false;
+            btnShare.onclick = () => {
+                if (redesVisiveis) {
+                    redesSociais.style.display = 'none';
+                    btnShare.innerText = '📢 Compartilhar';
+                } else {
+                    gerarBotoesCompartilhar(titulo, ano);
+                    redesSociais.style.display = 'flex';
+                    btnShare.innerText = '🔽 Esconder';
+                }
+                redesVisiveis = !redesVisiveis;
+            };
+            modalBotoes.appendChild(btnShare);
+
+        } catch (erro) {
+            console.error(erro);
+            modalSinopse.innerText = 'Erro ao carregar os detalhes.';
+        }
     }
 
-    function renderPagination(totalPages) {
-        if (showingFavorites || showingWatchlist) { paginationDiv.innerHTML = ''; return; }
-        const maxPages = Math.min(totalPages, 500);
-        if (maxPages <= 1) { paginationDiv.innerHTML = ''; return; }
-        let html = '';
-        if (currentPage > 1) html += `<button class="page-btn" data-page="${currentPage - 1}">◀ Anterior</button>`;
-        let start = Math.max(1, currentPage - 2);
-        let end = Math.min(maxPages, currentPage + 2);
-        for (let i = start; i <= end; i++) html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
-        if (currentPage < maxPages) html += `<button class="page-btn" data-page="${currentPage + 1}">Próximo ▶</button>`;
-        paginationDiv.innerHTML = html;
-        document.querySelectorAll('.page-btn').forEach(btn => { btn.addEventListener('click', () => { currentPage = parseInt(btn.dataset.page); loadContent(); }); });
-    }
-
-    function setupEvents() {
-        document.querySelectorAll('.type-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentType = btn.dataset.type;
-                currentPage = 1; currentQuery = ''; currentGenre = ''; searchInput.value = '';
-                showingFavorites = false; showingWatchlist = false;
-                loadGenres();
-                loadContent();
+    function gerarBotoesCompartilhar(titulo, ano) {
+        const urlAtual = window.location.href;
+        const textoCompartilhar = `🎬 "${titulo}" ${ano ? `(${ano})` : ''} - Dá uma olhada!`;
+        
+        redesSociais.innerHTML = `
+            <div class="rede-btn" data-rede="facebook">📘 Facebook</div>
+            <div class="rede-btn" data-rede="whatsapp">💬 WhatsApp</div>
+            <div class="rede-btn" data-rede="twitter">🐦 Twitter</div>
+        `;
+        
+        document.querySelectorAll('.rede-btn').forEach(btnRede => {
+            btnRede.addEventListener('click', (e) => {
+                const rede = btnRede.getAttribute('data-rede');
+                let shareUrl = '';
+                if (rede === 'facebook') shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlAtual)}`;
+                else if (rede === 'whatsapp') shareUrl = `https://wa.me/?text=${encodeURIComponent(textoCompartilhar + ' ' + urlAtual)}`;
+                else if (rede === 'twitter') shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textoCompartilhar)}&url=${encodeURIComponent(urlAtual)}`;
+                if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
             });
         });
-        searchBtn.onclick = () => { currentQuery = searchInput.value.trim(); currentPage = 1; if (currentQuery) loadContent(); else loadPopular(); };
-        searchInput.onkeypress = (e) => { if (e.key === 'Enter') searchBtn.click(); };
-        document.getElementById('showFavoritesBtn').onclick = () => { if (showingFavorites) loadContent(); else displayFavorites(); };
-        document.getElementById('showWatchlistBtn').onclick = () => { if (showingWatchlist) loadContent(); else displayWatchlist(); };
-        document.querySelector('.close-modal').onclick = () => { modal.style.display = 'none'; };
-        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
     }
 
-    loadGenres();
-    loadPopular();
-    setupEvents();
+    // =============================================
+    // PAGINAÇÃO
+    // =============================================
+    function renderizarPaginacao() {
+        if (totalPaginas <= 1) {
+            paginacaoDiv.innerHTML = '';
+            return;
+        }
+        
+        let html = '';
+        if (paginaAtual > 1) html += `<button class="pag-btn" data-pag="${paginaAtual-1}">◀ Anterior</button>`;
+        
+        let inicio = Math.max(1, paginaAtual - 2);
+        let fim = Math.min(totalPaginas, paginaAtual + 2);
+        for (let i = inicio; i <= fim; i++) {
+            html += `<button class="pag-btn ${i === paginaAtual ? 'ativo' : ''}" data-pag="${i}">${i}</button>`;
+        }
+        
+        if (paginaAtual < totalPaginas) html += `<button class="pag-btn" data-pag="${paginaAtual+1}">Próximo ▶</button>`;
+        
+        paginacaoDiv.innerHTML = html;
+        
+        document.querySelectorAll('.pag-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                paginaAtual = parseInt(btn.getAttribute('data-pag'));
+                carregarConteudo();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    }
+
+    // =============================================
+    // INICIALIZAR
+    // =============================================
+    carregarGeneros();
+    carregarConteudo();
 </script>
 </body>
 </html>
